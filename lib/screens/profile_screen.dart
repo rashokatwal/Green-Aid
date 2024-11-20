@@ -126,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         child: ListTile(
                           onTap: _logout, // Call the logout function
-                          leading: Icon(
+                          leading:  Icon(
                             Icons.logout,
                             size: 25,
                             color: Colors.redAccent,
