@@ -4,7 +4,6 @@ import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:green_aid/firebase_options.dart';
-// import 'package:green_aid/screens/navigation.dart';
 import 'package:green_aid/screens/splash_screen.dart';
 import 'package:flutter/services.dart';
 
@@ -21,10 +20,6 @@ Future<void> main() async {
 
   final firstCamera = cameras.first;
 
-  // WidgetsFlutterBinding.ensureInitialized();
-  // // Initialize Firebase SDK
-  // await Firebase.initializeApp();
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -33,8 +28,6 @@ Future<void> main() async {
   runApp(
     MaterialApp(
       theme: ThemeData(
-        // useMaterial3: true,
-        // brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white,
         colorScheme: const ColorScheme.light(
           primary: Color.fromRGBO(52, 190, 73, 1),

@@ -321,26 +321,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         emptyEmail = emailController.text.isEmpty;
                         setState(() {});
                         if (valid && !emptyPassword && !emptyConfirmPassword && !emptyFirstName && !emptyLastName && !emptyEmail) {
-                          // await FirebaseAuth.instance.verifyPhoneNumber(
-                          //   verificationCompleted: (PhoneAuthCredential credential) {},
-                          //   verificationFailed: (FirebaseAuthException ex) {}, 
-                          //   codeSent: (String verificationId, int? resendToken) {
-                          //     Navigator.push(
-                          //       context, 
-                          //       PageTransition(
-                          //         child: VerificationScreen(camera: widget.camera, verificationId: verificationId,), 
-                          //         type: PageTransitionType.rightToLeftJoined, 
-                          //         childCurrent: widget,
-                          //         curve: Curves.easeInOut,
-                          //         duration: const Duration(milliseconds: 300),
-                          //         reverseDuration: const Duration(milliseconds: 300)
-                          //       )
-                          //     );
-                          //   }, 
-                          //   codeAutoRetrievalTimeout: (String verificationId) {}, 
-                          //   phoneNumber: phoneNoController.text.toString()
-                          // );
-                          // print(emailController.text + passwordController.text);
+                          
                           try {
                             buttonChild = const SizedBox(height: 15, width: 15, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2,));
                             setState(() {
