@@ -31,50 +31,6 @@ List dummyData = [
 class _FriendsScreenState extends State<FriendsScreen> {
   @override
   Widget build(BuildContext context) {
-    // return SafeArea(
-    //   child: Column(
-    //     mainAxisAlignment: MainAxisAlignment.center,
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       const Padding(
-    //         padding: EdgeInsets.fromLTRB(30, 5, 30, 0),
-    //         child: Text(
-    //           "Friends",
-    //           style: TextStyle(
-    //             fontSize: 17,
-    //             fontWeight: FontWeight.w500
-    //           ),
-    //         ),
-    //       ),
-    //       const SizedBox(height: 10),
-    //       Expanded(
-    //         child: ListView.builder(
-    //           itemCount: dummyData.length,
-    //           itemBuilder: (context, index) {
-    //             return ListTile(
-    //               contentPadding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-    //               onTap: () {},
-    //               leading: Image(image: AssetImage('assets/images/${dummyData[index]["profile_picture"]}'), width: 50, height: 50),
-    //               title: Text("${dummyData[index]["first_name"]} ${dummyData[index]["last_name"]}", style: TextStyle(fontSize: 18),),
-    //               trailing: Container(
-    //                 height: 40,
-    //                 width: 40,
-    //                 decoration: BoxDecoration(
-    //                   borderRadius: BorderRadius.circular(50)
-    //                 ),
-    //                 child: IconButton(
-    //                   onPressed: () {  },
-    //                   icon: Icon(Icons.chevron_right, color: Colors.green,),
-    //                 ),
-    //               ),
-    //               subtitle: Text("Shared ${dummyData[index]["post_count"]} posts"),
-    //             );
-    //           },
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
     return SafeArea(
       child: DefaultTabController(
         length: 2,
