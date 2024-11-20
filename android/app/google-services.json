@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "101279751933",
+    "project_id": "green-aid",
+    "storage_bucket": "green-aid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101279751933:android:9d307223d50711f81a6894",
+        "android_client_info": {
+          "package_name": "com.example.green_aid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAy9ov89MwVa4BRVfBuvuhGWqUwkdiLH7k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
