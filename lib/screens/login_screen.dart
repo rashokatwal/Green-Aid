@@ -4,8 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:green_aid/components/navigation.dart';
 import 'package:green_aid/screens/register_screen.dart';
-// import 'package:green_aid/screens/verification_screen.dart';
-// import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:page_transition/page_transition.dart';
 
 class LoginScreen extends StatefulWidget {

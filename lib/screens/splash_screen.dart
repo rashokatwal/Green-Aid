@@ -1,7 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:camera/camera.dart';
 import 'package:green_aid/screens/login_screen.dart';
-// import 'package:green_aid/screens/take_picture_screen.dart';
 
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter/material.dart';
