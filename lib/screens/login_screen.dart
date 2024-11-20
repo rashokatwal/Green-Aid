@@ -68,15 +68,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Something went wrong. Please try again!")));
           break;
       }
-      // if (e.code == 'user-not-found') {
-      //   // print('No user found for that email.');
-      // } else if (e.code == 'wrong-password') {
-      //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Wrong password provided for that user.')));
-      //   // print('Wrong password provided for that user.');
-      // }
-      // else {
-      //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Something went wrong. Please try again!')));        
-      // }
     }
   }
 
