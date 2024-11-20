@@ -125,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: ListTile(
-                          onTap: _logout, // Call the logout function
+                          onTap: _logout,
                           leading:  Icon(
                             Icons.logout,
                             size: 25,
