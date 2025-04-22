@@ -12,33 +12,41 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<dynamic>? data;
   Map<String, dynamic>? userData;
+  bool isLoading = true;
 
   @override
   void initState() {
-    DatabaseService(uid: widget.uid).getUserData().then((snapshot) {
-      if(snapshot.exists) {
-        userData = snapshot.data() as Map<String, dynamic>?;
-      }
-      // print(userData?['savedScans']);
-      fetchSavedScans();
-    });
     super.initState();
+    loadUserAndScans();
   }
 
-  void fetchSavedScans() async {
+  void loadUserAndScans() async {
+    try {
+      final snapshot = await DatabaseService(uid: widget.uid).getUserData();
+      if (snapshot.exists) {
+        userData = snapshot.data() as Map<String, dynamic>?;
+        await fetchSavedScans();
+      }
+    } catch (e) {
+      print('Error loading user or scans: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> fetchSavedScans() async {
     try {
       final snapshot = await DatabaseService(uid: widget.uid).getSavedScans(userData?['savedScans']);
-      // print(snapshot.length);
       setState(() {
-        if(snapshot.isNotEmpty) {
-          data = snapshot;
-        }
-        else {
-          data = [];
-        }
+        data = snapshot.isNotEmpty ? snapshot : [];
       });
     } catch (e) {
       print('Error fetching saved scans: $e');
+      setState(() {
+        data = [];
+      });
     }
   }
 
@@ -49,139 +57,97 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // --- Header ---
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
                 "Your Scans",
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500
-                ),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
               ),
               TextButton(
-                onPressed: () {}, 
+                onPressed: () {},
                 child: Row(
-                  children: [
-                    Text("See more",  style: TextStyle(color: Color.fromARGB(255, 90, 90, 90)),),
-                    Icon(Icons.chevron_right)
+                  children: const [
+                    Text("See more", style: TextStyle(color: Color.fromARGB(255, 90, 90, 90))),
+                    Icon(Icons.chevron_right),
                   ],
-                )
-              )
+                ),
+              ),
             ],
           ),
-          Container(
+
+          // --- Saved Scans Section ---
+          SizedBox(
             height: 215,
-            child: data != null ? (data!.isNotEmpty ? ListView.builder(
-              itemCount: data?.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return Container(
-                  height: 100,
-                  width: 130,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary,
-                    borderRadius: BorderRadius.circular(20)
-                  ),
-                  padding: EdgeInsets.all(15),
-                  margin: EdgeInsets.fromLTRB(0, 20, 10, 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image(
-                          height: 100,
-                          width: 100,
-                          image: AssetImage('assets/images/demo.jpg'),
-                          fit: BoxFit.cover,
-                        ),
+            child: isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : (data == null || data!.isEmpty)
+                    ? const Center(child: Text("No Scans Saved"))
+                    : ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: data!.length,
+                        itemBuilder: (context, index) {
+                          final scan = data![index];
+                          return Container(
+                            height: 100,
+                            width: 130,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.secondary,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: const EdgeInsets.all(15),
+                            margin: const EdgeInsets.fromLTRB(0, 20, 10, 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.asset(
+                                    'assets/images/demo.jpg',
+                                    height: 100,
+                                    width: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  "${scan['diseaseName'] ?? 'Unknown'}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.titleMedium,
+                                ),
+                                Text(
+                                  "${scan['scannedDate'] ?? ''}",
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "${data?[index]['diseaseName']}",
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      Text(
-                        "${data?[index]['scannedDate']}",
-                        style: TextStyle(
-                          fontSize: 12
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ) : Center(child: const Text("No Scans Saved"))) : const Center(child: CircularProgressIndicator())
-            // child: ListView.builder(
-            //   itemCount: data!.length,
-            //   scrollDirection: Axis.horizontal,
-            //   itemBuilder: (context, index) {
-            //     return Container(
-            //       height: 100,
-            //       width: 130,
-            //       decoration: BoxDecoration(
-            //         color: Theme.of(context).colorScheme.secondary,
-            //         borderRadius: BorderRadius.circular(20)
-            //       ),
-            //       padding: EdgeInsets.all(15),
-            //       margin: EdgeInsets.fromLTRB(0, 20, 10, 20),
-            //       child: Column(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         children: [
-            //           ClipRRect(
-            //             borderRadius: BorderRadius.circular(10),
-            //             child: Image(
-            //               height: 100,
-            //               width: 100,
-            //               image: AssetImage('assets/images/demo.jpg'),
-            //               fit: BoxFit.cover,
-            //             ),
-            //           ),
-            //           SizedBox(
-            //             height: 5,
-            //           ),
-            //           Text(
-            //             "Horse Chestnut Leaf Blotch",
-            //             overflow: TextOverflow.ellipsis,
-            //             style: Theme.of(context).textTheme.titleMedium,
-            //           ),
-            //           Text(
-            //             "11/09/2024",
-            //             style: TextStyle(
-            //               fontSize: 12
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     );
-            //   }
-            // ),
           ),
+
+          // --- Shared by Friends ---
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 "Shared by Friends",
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500
-                ),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
               ),
               TextButton(
-                onPressed: () {}, 
+                onPressed: () {},
                 child: Row(
-                  children: [
-                    Text("See more",  style: TextStyle(color: Color.fromARGB(255, 90, 90, 90)),),
-                    Icon(Icons.chevron_right)
+                  children: const [
+                    Text("See more", style: TextStyle(color: Color.fromARGB(255, 90, 90, 90))),
+                    Icon(Icons.chevron_right),
                   ],
-                )
-              )
+                ),
+              ),
             ],
           ),
+
+          // --- Shared Scans List ---
           Expanded(
             child: ListView.builder(
               itemCount: 8,
@@ -191,21 +157,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {},
                   leading: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Image(image: AssetImage('assets/images/demo.jpg'),  width: 60, height: 60, fit: BoxFit.cover,),
+                    child: Image.asset(
+                      'assets/images/demo.jpg',
+                      width: 60,
+                      height: 60,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  title: Text("Horse Chestnut Leaf Blotch", style: TextStyle(fontSize: 17),),
+                  title: const Text("Horse Chestnut Leaf Blotch", style: TextStyle(fontSize: 17)),
+                  subtitle: const Text("Rashok Katwal\n11/09/2024"),
                   trailing: Container(
                     height: 40,
                     width: 40,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50)
+                      borderRadius: BorderRadius.circular(50),
                     ),
                     child: IconButton(
-                      onPressed: () {  },
-                      icon: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.primary,),
+                      onPressed: () {},
+                      icon: Icon(Icons.chevron_right, color: Theme.of(context).colorScheme.primary),
                     ),
                   ),
-                  subtitle: Text("Rashok Katwal\n11/09/2024"),
                 );
               },
             ),
