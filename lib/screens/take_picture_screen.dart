@@ -137,7 +137,11 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   }
 
   Future<Map<String, dynamic>> identifyDisease(String imagepath) async {
+<<<<<<< HEAD
     const apiKey = "AIzaSyCjUNFRYS80ceup7nwPrVF3gefSDCOowsc";
+=======
+    const apiKey = "Hidden";
+>>>>>>> 363aaf90ea3cc38c1700b4ec0c070eeadd6280d9
 
     final model = GenerativeModel(
       model: 'gemini-1.5-pro',
